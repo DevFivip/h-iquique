@@ -169,6 +169,19 @@ class MakePdfController extends Controller
         // Print text using writeHTMLCell()
         $pdf->writeHTMLCell(146, 200, 33, 65, $html, 0, 0, 0, true, '', true);
 
+
+
+        $html = <<<EOD
+        <div style="text-align: center;">
+            <p style="line-height: 20px;"> <b>Unidad Toma de Muestras y Testeo SEREMI de Salud $persona->origen</b></p>
+        </div>
+        EOD;
+
+        // Print text using writeHTMLCell()
+        $pdf->writeHTMLCell(90, 200, 59, 161, $html, 0, 0, 0, true, '', true);
+
+
+
         $link = env('APP_URL') . '/get/certificado' . '?token=' . $persona->_token;
 
         $id = $persona->id;
