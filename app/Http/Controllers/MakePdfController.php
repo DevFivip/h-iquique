@@ -162,7 +162,7 @@ class MakePdfController extends Controller
 
         $html = <<<EOD
         <div style="text-align: justify;">
-        <p style="line-height: 20px;">La <b>SECRETARÍA REGIONAL MINISTERIAL DE SALUD</b> de la <b>Región de Tarapacá</b>, certifica que, <b>$nombre</b> identificado con Documento <b>$persona->documento</b> con fecha de nacimiento en <b>$nacimiento</b> se realizó un Test de <b>ANTÍGENOS</b> para <b>COVID-19</b> con resultado <b>NEGATIVO</b>, tomado el día <b>$fecha_muestra</b> según indicaciones regionales recibidas por el Ministerio de Salud.</p>
+        <p style="line-height: 20px;">La <b>SECRETARÍA REGIONAL MINISTERIAL DE SALUD</b> de la <b>Región de $persona->origen</b>, certifica que, <b>$nombre</b> identificado con Documento <b>$persona->documento</b> con fecha de nacimiento en <b>$nacimiento</b> se realizó un Test de <b>ANTÍGENOS</b> para <b>COVID-19</b> con resultado <b>NEGATIVO</b>, tomado el día <b>$fecha_muestra</b> según indicaciones regionales recibidas por el Ministerio de Salud.</p>
         </div>
         EOD;
 

@@ -68,7 +68,7 @@ class PersonasController extends Controller
     {
         $persona = Persona::find($id);
         $sexos = ['MASCULINO', "FEMENINO"];
-        $sitios = ['IQUIQUE'];
+        $sitios = ['Iquique','Viña del Mar'];
 
         $test = new DateTime($persona->fecha_recepcion_muestra);
         $fecha = $test->format('Y-m-d');

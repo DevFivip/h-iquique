@@ -42,7 +42,8 @@
                         <div class="form-group">
                             <label for="origen">Origen</label>
                             <select name="origen" class="form-control">
-                                <option value="IQUIQUE">IQUIQUE</option>
+                                <option value="Iquique">IQUIQUE</option>
+                                <option value="Viña del Mar">Viña del Mar</option>
                             </select>
                         </div>
 
