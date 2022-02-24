@@ -274,7 +274,7 @@ class MakePdfController extends Controller
             $pdf->useTemplate($tplIdx);
         }
 
-        $nombre = ucwords($persona->nombres . ' ' . $persona->apellidos);
+        $nombre = ucwords(strtolower($persona->nombres . ' ' . $persona->apellidos));
         $correlativo = 28159199 + ($persona->id * 2) + 5;
 
 
