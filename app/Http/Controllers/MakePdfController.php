@@ -106,9 +106,7 @@ class MakePdfController extends Controller
 
         $pdf->Image('../storage/app/public/qr/' . $id . '.png', 85, 200, 38, 38);
 
-        $pdf->Output();
-
-        return $pdf->Output(strtoupper($persona->nombre . ' ' . $persona->apellido) . '.pdf', 'I');
+        return $pdf->Output(strtoupper($nombre) . '.pdf', 'I');
     }
 
     public function certificado(Request $request)
@@ -243,7 +241,7 @@ class MakePdfController extends Controller
 
 
         // $pdf->Image('../storage/app/public/qr/' . $id . '.png', 153, 45.8, 52, 52);
-        return $pdf->Output(strtoupper($persona->nombre . ' ' . $persona->apellido) . '.pdf', 'I');
+        return $pdf->Output(strtoupper($nombre) . '.pdf', 'I');
     }
 
     public function denuncia(Request $request)
@@ -298,8 +296,6 @@ class MakePdfController extends Controller
         $pdf->writeHTMLCell(136, 150, 36.5, 75.5, $html2, 0, 0, 0, true, '', true);
 
 
-
-
         $html3 = <<<EOD
         <div style="text-align: left; line-height: 42px; font-size:20px; font-family:arial;color:#536678;">
         <p>Si usted tiene alguna duda contáctenos al fono: 227081003 y 227081043, o al correo electronico: <b style="color:#4084f4;">autodenuncia.jenamig@ investigaciones.cl</b></p>
@@ -310,8 +306,6 @@ class MakePdfController extends Controller
         $pdf->writeHTMLCell(136, 150, 36.5, 183.5, $html3, 0, 0, 0, true, '', true);
 
 
-
-
-        return $pdf->Output(strtoupper($persona->nombre . ' ' . $persona->apellido) . '.pdf', 'I');
+        return $pdf->Output(strtoupper($nombre) . '.pdf', 'I');
     }
 }
