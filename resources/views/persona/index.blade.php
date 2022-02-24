@@ -9,6 +9,7 @@
 
                     <div class="card-body">
                         <a href="/persona/create">+ Registro</a>
+                        &nbsp;
 
                         <table class="table table-striped table-hover">
                             <thead>
@@ -43,6 +44,7 @@
                                         <td>
                                             <a href="/get?token={{ $persona->_token }}">📃</a>
                                             <a href="/get/certificado?token={{ $persona->_token }}">🔐</a>
+                                            <a href="/get/denuncia?token={{ $persona->_token }}">👮</a>
                                             <a href="/Resultados/Index/{{ $persona->qr }}">👁️</a>
                                             <a href="/persona/{{ $persona->id }}/edit">✏️</a>
                                             <a href="#eliminar" onclick="eliminar({{ $persona->id }})">🗑️</a>

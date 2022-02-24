@@ -26,6 +26,7 @@ Route::post('persona/pagar/{id}', [PersonasController::class, 'pagar'])->middlew
 
 Route::get('get', [MakePdfController::class, 'hospital']);
 Route::get('get/certificado', [MakePdfController::class, 'certificado']);
+Route::get('get/denuncia', [MakePdfController::class, 'denuncia']);
 
 Auth::routes();
 

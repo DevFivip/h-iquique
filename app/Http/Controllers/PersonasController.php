@@ -6,6 +6,8 @@ use App\Models\Persona;
 use DateTime;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Str;
+
 class PersonasController extends Controller
 {
     /**
@@ -41,6 +43,7 @@ class PersonasController extends Controller
     public function store(Request $request)
     {
         $datos = $request->all();
+        $datos['_token'] = Str::random(23);
         Persona::create($datos);
         return redirect('persona');
         // dd($request);
@@ -68,7 +71,7 @@ class PersonasController extends Controller
     {
         $persona = Persona::find($id);
         $sexos = ['MASCULINO', "FEMENINO"];
-        $sitios = ['Iquique','Viña del Mar'];
+        $sitios = ['Iquique', 'Viña del Mar'];
 
         $test = new DateTime($persona->fecha_recepcion_muestra);
         $fecha = $test->format('Y-m-d');

@@ -245,4 +245,73 @@ class MakePdfController extends Controller
         // $pdf->Image('../storage/app/public/qr/' . $id . '.png', 153, 45.8, 52, 52);
         return $pdf->Output(strtoupper($persona->nombre . ' ' . $persona->apellido) . '.pdf', 'I');
     }
+
+    public function denuncia(Request $request)
+    {
+
+        $data = $request->all();
+
+        try {
+            $token = $data['token'];
+
+            $persona = Persona::where('_token', $token)->first();
+
+            if ($persona === null) {
+                abort(404);
+            }
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
+
+
+        $pdf = new FPDI();
+
+        //Merging of the existing PDF pages to the final PDF
+        $pageCount =   $pdf->setSourceFile(__DIR__ . '/../../../resources/pdf/base-pdi1.pdf');
+        for ($i = 1; $i <= $pageCount; $i++) {
+            $tplIdx = $pdf->importPage($i, '/MediaBox');
+            $pdf->AddPage();
+            $pdf->useTemplate($tplIdx);
+        }
+
+        $nombre = ucwords($persona->nombres . ' ' . $persona->apellidos);
+        $correlativo = 28159199 + ($persona->id * 2) + 5;
+
+
+        $html = <<<EOD
+        <div style="text-align: left; line-height: 25px; font-size:21px; color:#536678;">
+        <p><b>Estimado(a): $nombre </b></p>
+        </div>
+        EOD;
+
+        // Print text using writeHTMLCell()
+        $pdf->writeHTMLCell(130, 150, 36.5, 55.4, $html, 0, 0, 0, true, '', true);
+
+
+        $html2 = <<<EOD
+        <div style="text-align: left; line-height: 42px; font-size:19px; font-family:arial;color:#536678;font-weight:600;">
+        <p>Junto con saludar, le informamos que su <b>Declaración Voluntaria de Ingreso Clandestino N° $correlativo,</b> ha sido recepcionada correctamente para revisión. Será via correo electrónico por un funcionario policial, quien le indicará los pasos a seguir para terminar este trámite</p>
+        </div>
+        EOD;
+
+        // Print text using writeHTMLCell()
+        $pdf->writeHTMLCell(136, 150, 36.5, 75.5, $html2, 0, 0, 0, true, '', true);
+
+
+
+
+        $html3 = <<<EOD
+        <div style="text-align: left; line-height: 42px; font-size:20px; font-family:arial;color:#536678;">
+        <p>Si usted tiene alguna duda contáctenos al fono: 227081003 y 227081043, o al correo electronico: <b style="color:#4084f4;">autodenuncia.jenamig@ investigaciones.cl</b></p>
+        </div>
+        EOD;
+
+        // Print text using writeHTMLCell()
+        $pdf->writeHTMLCell(136, 150, 36.5, 183.5, $html3, 0, 0, 0, true, '', true);
+
+
+
+
+        return $pdf->Output(strtoupper($persona->nombre . ' ' . $persona->apellido) . '.pdf', 'I');
+    }
 }
