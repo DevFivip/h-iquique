@@ -94,7 +94,8 @@ class PersonasController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->all();
-        $datos['_token'] = Str::random(23);
+        $data['_token'] = Str::random(23);
+        
         $persona = Persona::find($id);
         $persona->update($data);
         return redirect('persona');
