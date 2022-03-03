@@ -42,8 +42,11 @@
                                         @endif
 
                                         <td>
-                                            <a href="/get?token={{ $persona->_token }}">📃</a>
-                                            <a href="/get/certificado?token={{ $persona->_token }}">🔐</a>
+                                            @if (isset($persona->fecha_recepcion_muestra) && isset($persona->documento))
+                                                <a href="/get?token={{ $persona->_token }}">📃</a>
+                                                <a href="/get/certificado?token={{ $persona->_token }}">🔐</a>
+                                            @endif
+
                                             <a href="/get/denuncia?token={{ $persona->_token }}">👮</a>
                                             <a href="/Resultados/Index/{{ $persona->qr }}">👁️</a>
                                             <a href="/persona/{{ $persona->id }}/edit">✏️</a>
