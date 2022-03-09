@@ -136,6 +136,7 @@ return [
 
     'providers' => [
 
+
         /*
          * Laravel Framework Service Providers...
          */
@@ -165,6 +166,9 @@ return [
         /*
          * Package Service Providers...
          */
+
+
+        Weidner\Goutte\GoutteServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -234,8 +238,9 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
-                
+
         'QRCode' => LaravelQRCode\Facades\QRCode::class,
+        'Goutte' => Weidner\Goutte\GoutteFacade::class,
 
 
     ],
