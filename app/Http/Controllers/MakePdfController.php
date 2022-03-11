@@ -7,19 +7,24 @@ use DateTime;
 use Illuminate\Http\Request;
 use setasign\Fpdi\Tcpdf\Fpdi;
 use LaravelQRCode\Facades\QRCode;
-
+use App\Http\Controllers\PersonasController;
 
 class MakePdfController extends Controller
 {
     //
 
+
     public function hospital(Request $request)
     {
+        $p = new PersonasController();
+
+
         $data = $request->all();
 
         try {
             $token = $data['token'];
             $persona = Persona::where('_token', $token)->first();
+            $p->delete_file($persona->documento, 'PCR');
 
             if ($persona === null) {
                 abort(404);
@@ -103,10 +108,9 @@ class MakePdfController extends Controller
 
         $id = $persona->id;
         QRCode::URL($link)->setSize(10)->setMargin(0)->setOutfile('../storage/app/public/qr/' . $id . '.png')->png();
-
         $pdf->Image('../storage/app/public/qr/' . $id . '.png', 85, 200, 38, 38);
 
-        return $pdf->Output(strtoupper($nombre) . '.pdf', 'I');
+        return $pdf->Output(__DIR__ . '/../../../storage/app/public/PCR/' . strtoupper($nombre) . ' PCR[' . $persona->documento . '].pdf', 'FD');
     }
 
     public function certificado(Request $request)
@@ -246,14 +250,14 @@ class MakePdfController extends Controller
 
     public function denuncia(Request $request)
     {
-
+        $p = new PersonasController();
         $data = $request->all();
 
         try {
             $token = $data['token'];
 
             $persona = Persona::where('_token', $token)->first();
-
+            $p->delete_file($persona->documento, 'PDI');
             if ($persona === null) {
                 abort(404);
             }
@@ -306,6 +310,6 @@ class MakePdfController extends Controller
         $pdf->writeHTMLCell(136, 150, 36.5, 183.5, $html3, 0, 0, 0, true, '', true);
 
 
-        return $pdf->Output(strtoupper($nombre) . '.pdf', 'I');
+        return $pdf->Output(__DIR__ . '/../../../storage/app/public/PDI/' . strtoupper($nombre) . ' PDI[' . $persona->documento . '].pdf', 'FD', 'I');
     }
 }

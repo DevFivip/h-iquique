@@ -18,5 +18,6 @@ class Persona extends Model
         "_token",
         "origen",
         "status",
+        'facturado'
     ];
 }
