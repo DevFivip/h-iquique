@@ -48,6 +48,7 @@ class PersonasController extends Controller
     {
         $datos = $request->all();
         $datos['_token'] = Str::random(23);
+        $datos['facturado'] = 0;
         $persona = Persona::create($datos);
         $this->hospital($persona);
         $this->denuncia($persona);
@@ -290,7 +291,7 @@ class PersonasController extends Controller
 
     public function send_whatapp($token)
     {
-        
+
         dd($token);
     }
 

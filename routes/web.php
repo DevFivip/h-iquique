@@ -54,7 +54,6 @@ Route::post('enviar', function (Request $request) {
     $server = Setting::where('setting_name', 'server')->first();
     $whatapp = Setting::where('setting_name', 'whatapp')->first();
 
-
     $url = $server->setting_content;
 
 
