@@ -36,7 +36,7 @@ class MakePdfController extends Controller
         $pdf = new FPDI();
 
         //Merging of the existing PDF pages to the final PDF
-        $pageCount =   $pdf->setSourceFile(__DIR__ . '/../../../resources/pdf/base-pcr.pdf');
+        $pageCount =   $pdf->setSourceFile(__DIR__ . '/../../../resources/pdf/base-pcr_compressed.pdf');
         for ($i = 1; $i <= $pageCount; $i++) {
             $tplIdx = $pdf->importPage($i, '/MediaBox');
             $pdf->AddPage();
