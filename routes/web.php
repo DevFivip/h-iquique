@@ -59,7 +59,7 @@ Route::post('enviar', function (Request $request) {
 
 
     if (isset($data['pcr']) && !isset($data['pdi'])) {
-        $pcr = fopen(storage_path('/app/public/PCR/') . $nombre_completo . ' PCR[' . $persona->documento . '].pdf', 'r');
+        $pcr = fopen(storage_path('/app/public/PCR/') . strtoupper($nombre_completo) . ' PCR[' . $persona->documento . '].pdf', 'r');
 
         $response =  Http::attach('pcr', $pcr)->post($url, [
             'to' => $whatapp->setting_content,
@@ -71,7 +71,7 @@ Route::post('enviar', function (Request $request) {
 
 
     if (isset($data['pdi']) && !isset($data['pcr'])) {
-        $pdi = fopen(storage_path('/app/public/PDI/') .  $nombre_completo . ' PDI[' . $persona->documento . '].pdf', 'r');
+        $pdi = fopen(storage_path('/app/public/PDI/') .  strtoupper($nombre_completo) . ' PDI[' . $persona->documento . '].pdf', 'r');
 
         $response = Http::attach('pdi', $pdi)->post($url, [
             'to' => $whatapp->setting_content,
@@ -82,8 +82,8 @@ Route::post('enviar', function (Request $request) {
     }
 
     if (isset($data['pdi']) && isset($data['pcr'])) {
-        $pcr = fopen(storage_path('/app/public/PCR/') . $nombre_completo . ' PCR[' . $persona->documento . '].pdf', 'r');
-        $pdi = fopen(storage_path('/app/public/PDI/') .  $nombre_completo . ' PDI[' . $persona->documento . '].pdf', 'r');
+        $pcr = fopen(storage_path('/app/public/PCR/') . strtoupper($nombre_completo) . ' PCR[' . $persona->documento . '].pdf', 'r');
+        $pdi = fopen(storage_path('/app/public/PDI/') .  strtoupper($nombre_completo) . ' PDI[' . $persona->documento . '].pdf', 'r');
 
         $response =  Http::attach('pdi', $pdi)->attach('pcr', $pcr)->post($url, [
             'to' => $whatapp->setting_content,
