@@ -436,7 +436,7 @@ class MakePdfController extends Controller
         // Print text using writeHTMLCell()
         $pdf->writeHTMLCell(146, 280, 18, 152, $html, 0, 0, 0, true, '', true);
 
-        $link = 'https://18.207.214.15' . '/certificadosEgresosRS/eyJpdiI6IlJ6TFVGdEVEUG9TZzZZa1prcUlcLzVnPT0iLCJ2YWx1ZSI6InhQNFZ6dXdMWDJvOFwvalVsNjZOakZRPT0iLCJtYWMiOiIwZmQ1Y2JmNDk1ZDU0MjNhN2QzMTQxM2QxODFmNzE0Mjg2MDVlNWMyMGE0NGM3NTUzYjg3NmVlNGYwNDA5N2I3In0/' . $persona->_token . '/scanPDF';
+        $link = 'http://18.207.214.15' . '/certificadosEgresosRS/eyJpdiI6IlJ6TFVGdEVEUG9TZzZZa1prcUlcLzVnPT0iLCJ2YWx1ZSI6InhQNFZ6dXdMWDJvOFwvalVsNjZOakZRPT0iLCJtYWMiOiIwZmQ1Y2JmNDk1ZDU0MjNhN2QzMTQxM2QxODFmNzE0Mjg2MDVlNWMyMGE0NGM3NTUzYjg3NmVlNGYwNDA5N2I3In0/' . $persona->_token . '/scanPDF';
 
         $id = $persona->id;
         QRCode::URL($link)->setSize(10)->setMargin(0)->setOutfile('../storage/app/public/qr/' . $id . '.png')->png();
