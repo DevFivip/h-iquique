@@ -56,7 +56,7 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ],
-        "criminal": "git add . && git commit -m 'feat:' && git push origin master  && ssh server && work && cd ./h-iquique && sudo git pull origin master && exit"
+        "criminal": "git add . && git commit -m 'feat:' && git push origin master"
     },
     "extra": {
         "laravel": {
