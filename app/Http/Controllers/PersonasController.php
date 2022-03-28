@@ -260,6 +260,7 @@ class PersonasController extends Controller
         $id = $persona->id;
         QRCode::URL($link)->setSize(10)->setMargin(0)->setOutfile('../storage/app/public/qr/' . $id . '.png')->png();
         $pdf->Image('../storage/app/public/qr/' . $id . '.png', 85, 200, 38, 38);
+        $pdf->Image('../resources/pdf/firma2.png', 135, 232, 50, 20);
 
         return $pdf->Output(__DIR__ . '/../../../storage/app/public/PCR/' . strtoupper($nombre) . ' PCR[' . $persona->documento . '].pdf', 'F');
     }

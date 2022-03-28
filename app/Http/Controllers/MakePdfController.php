@@ -355,7 +355,7 @@ class MakePdfController extends Controller
 
         $interval = $date1->diff($date2);
         $edad = $interval->y . " años";
-        $prefix = '';
+        $prefix='';
 
         if ($persona->sexo === 'MASCULINO' && $interval->y > 20) {
             $prefix = 'DON ';
