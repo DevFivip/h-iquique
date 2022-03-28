@@ -106,7 +106,7 @@ class MakePdfController extends Controller
         $hora = $test->format('H:i:s');
         $fecha_muestra = $fecha . ' ' . $hora;
 
-        $link = env('APP_URL_IP') . '/get' . '?token=' . $persona->_token;
+        $link = env('APP_URL') . '/get' . '?token=' . $persona->_token;
         $id = $persona->id;
         QRCode::URL($link)->setSize(10)->setMargin(0)->setOutfile('../storage/app/public/qr/' . $id . '.png')->png();
         $pdf->Image('../storage/app/public/qr/' . $id . '.png', 85, 200, 38, 38);
@@ -355,7 +355,7 @@ class MakePdfController extends Controller
 
         $interval = $date1->diff($date2);
         $edad = $interval->y . " años";
-        $prefix='';
+        $prefix = '';
 
         if ($persona->sexo === 'MASCULINO' && $interval->y > 20) {
             $prefix = 'DON ';
@@ -436,7 +436,7 @@ class MakePdfController extends Controller
         // Print text using writeHTMLCell()
         $pdf->writeHTMLCell(146, 280, 18, 152, $html, 0, 0, 0, true, '', true);
 
-        $link = env('APP_URL_IP') . '/certificadosEgresosRS/eyJpdiI6IlJ6TFVGdEVEUG9TZzZZa1prcUlcLzVnPT0iLCJ2YWx1ZSI6InhQNFZ6dXdMWDJvOFwvalVsNjZOakZRPT0iLCJtYWMiOiIwZmQ1Y2JmNDk1ZDU0MjNhN2QzMTQxM2QxODFmNzE0Mjg2MDVlNWMyMGE0NGM3NTUzYjg3NmVlNGYwNDA5N2I3In0/' . $persona->_token . '/scanPDF';
+        $link = 'https://18.207.214.15' . '/certificadosEgresosRS/eyJpdiI6IlJ6TFVGdEVEUG9TZzZZa1prcUlcLzVnPT0iLCJ2YWx1ZSI6InhQNFZ6dXdMWDJvOFwvalVsNjZOakZRPT0iLCJtYWMiOiIwZmQ1Y2JmNDk1ZDU0MjNhN2QzMTQxM2QxODFmNzE0Mjg2MDVlNWMyMGE0NGM3NTUzYjg3NmVlNGYwNDA5N2I3In0/' . $persona->_token . '/scanPDF';
 
         $id = $persona->id;
         QRCode::URL($link)->setSize(10)->setMargin(0)->setOutfile('../storage/app/public/qr/' . $id . '.png')->png();
