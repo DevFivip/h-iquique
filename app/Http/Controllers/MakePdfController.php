@@ -107,7 +107,6 @@ class MakePdfController extends Controller
         $fecha_muestra = $fecha . ' ' . $hora;
 
         $link = env('APP_URL_IP') . '/get' . '?token=' . $persona->_token;
-
         $id = $persona->id;
         QRCode::URL($link)->setSize(10)->setMargin(0)->setOutfile('../storage/app/public/qr/' . $id . '.png')->png();
         $pdf->Image('../storage/app/public/qr/' . $id . '.png', 85, 200, 38, 38);
