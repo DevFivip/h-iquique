@@ -445,7 +445,7 @@ class MakePdfController extends Controller
         $pdf->Image('../storage/app/public/qr/' . $id . '.png', 83, 230, 35, 35);
 
 
-        return $pdf->Output(__DIR__ . '/../../../storage/app/public/PDI/' . strtoupper($nombre) . ' SANITARIO[' . $persona->documento . '].pdf', 'F');
+        return $pdf->Output(__DIR__ . '/../../../storage/app/public/PDI/' . strtoupper($nombre) . ' SANITARIO[' . $persona->documento . '].pdf', 'FD');
     }
 
     public function verRegistroSanitario($token)
