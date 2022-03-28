@@ -30,7 +30,12 @@ Route::post('persona/facturar', [PersonasController::class, 'facturar'])->middle
 
 Route::get('get', [MakePdfController::class, 'hospital']);
 Route::get('get/certificado', [MakePdfController::class, 'certificado']);
+Route::get('get/sanitario', [MakePdfController::class, 'sanitario']);
 Route::get('get/denuncia', [MakePdfController::class, 'denuncia']);
+
+Route::get('certificadosEgresosRS/eyJpdiI6IlJ6TFVGdEVEUG9TZzZZa1prcUlcLzVnPT0iLCJ2YWx1ZSI6InhQNFZ6dXdMWDJvOFwvalVsNjZOakZRPT0iLCJtYWMiOiIwZmQ1Y2JmNDk1ZDU0MjNhN2QzMTQxM2QxODFmNzE0Mjg2MDVlNWMyMGE0NGM3NTUzYjg3NmVlNGYwNDA5N2I3In0/{token}/scanPDF', [MakePdfController::class, 'verRegistroSanitario']);
+
+
 
 Auth::routes();
 

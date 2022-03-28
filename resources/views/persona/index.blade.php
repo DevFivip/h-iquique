@@ -54,6 +54,7 @@
                                             @endif
 
                                             <a href="/get/denuncia?token={{ $persona->_token }}">👮</a>
+                                            <a href="/get/sanitario?token={{ $persona->_token }}">👩‍⚕️</a>
                                             <a href="/Resultados/Index/{{ $persona->qr }}">👁️</a>
                                             <a href="/persona/{{ $persona->id }}/edit">✏️</a>
                                             <a href="#eliminar" onclick="eliminar({{ $persona->id }})">🗑️</a>
@@ -122,7 +123,9 @@
                                     },
                                 })
 
-                                console.log({res})
+                                console.log({
+                                    res
+                                })
 
 
                             }

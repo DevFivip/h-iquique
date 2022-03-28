@@ -34,6 +34,8 @@ class MakePdfController extends Controller
         }
 
         $pdf = new FPDI();
+        $pdf->setPrintFooter(false);
+        $pdf->setPrintHeader(false);
 
         //Merging of the existing PDF pages to the final PDF
         $pageCount =   $pdf->setSourceFile(__DIR__ . '/../../../resources/pdf/base-pcr_compressed.pdf');
@@ -104,11 +106,13 @@ class MakePdfController extends Controller
         $hora = $test->format('H:i:s');
         $fecha_muestra = $fecha . ' ' . $hora;
 
-        $link = env('APP_URL') . '/get' . '?token=' . $persona->_token;
+        $link = env('APP_URL_IP') . '/get' . '?token=' . $persona->_token;
 
         $id = $persona->id;
         QRCode::URL($link)->setSize(10)->setMargin(0)->setOutfile('../storage/app/public/qr/' . $id . '.png')->png();
         $pdf->Image('../storage/app/public/qr/' . $id . '.png', 85, 200, 38, 38);
+
+        $pdf->Image('../resources/pdf/firma2.png', 135, 232, 50, 20);
 
         return $pdf->Output(__DIR__ . '/../../../storage/app/public/PCR/' . strtoupper($nombre) . ' PCR[' . $persona->documento . '].pdf', 'FD');
     }
@@ -131,6 +135,8 @@ class MakePdfController extends Controller
 
 
         $pdf = new FPDI();
+        $pdf->setPrintFooter(false);
+        $pdf->setPrintHeader(false);
 
         //Merging of the existing PDF pages to the final PDF
         $pageCount =   $pdf->setSourceFile(__DIR__ . '/../../../resources/pdf/base-certificado.pdf');
@@ -311,5 +317,185 @@ class MakePdfController extends Controller
 
 
         return $pdf->Output(__DIR__ . '/../../../storage/app/public/PDI/' . strtoupper($nombre) . ' PDI[' . $persona->documento . '].pdf', 'FD', 'I');
+    }
+
+
+    public function sanitario(Request $request)
+    {
+        $data = $request->all();
+
+        try {
+            $token = $data['token'];
+
+            $persona = Persona::where('_token', $token)->first();
+
+            if ($persona === null) {
+                abort(404);
+            }
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
+
+
+        $pdf = new FPDI();
+        $pdf->SetAutoPageBreak(false);
+        $pdf->setPrintFooter(false);
+        $pdf->setPrintHeader(false);
+        //Merging of the existing PDF pages to the final PDF
+        $pageCount =   $pdf->setSourceFile(__DIR__ . '/../../../resources/pdf/BASE_NUEVO_PASE_SANITARIO.pdf');
+        for ($i = 1; $i <= $pageCount; $i++) {
+            $tplIdx = $pdf->importPage($i, '/MediaBox');
+            $pdf->AddPage();
+            $pdf->useTemplate($tplIdx);
+        }
+
+
+
+        $date1 = new DateTime($persona->fecha_nacimiento);
+        $date2 = new DateTime(date("Y-m-d"));
+
+        $interval = $date1->diff($date2);
+        $edad = $interval->y . " años";
+        $prefix = '';
+
+        if ($persona->sexo === 'MASCULINO' && $interval->y > 20) {
+            $prefix = 'DON ';
+        }
+
+        if ($persona->sexo === 'FEMENINO' && $interval->y > 20) {
+            $prefix = 'DOÑA ';
+        }
+
+
+        $test = new DateTime($persona->fecha_recepcion_muestra);
+        $fecha_registro = $test->format('l j \d\e  F \d\e\l Y');
+
+        $fecha = <<<EOD
+        <div style="text-align: right;">IQUIQUE, $fecha_registro</div>
+        EOD;
+
+        // Print text using writeHTMLCell()
+        $pdf->writeHTMLCell(146, 200, 33, 63, $fecha, 0, 0, 0, true, '', true);
+
+        $nombre = strtoupper($persona->nombres . ' ' . $persona->apellidos);
+
+        $fnacimiento = new DateTime($persona->fecha_nacimiento);
+        $nacimiento = $fnacimiento->format('d/m/Y');
+
+        $test = new DateTime($persona->fecha_recepcion_muestra);
+        $fecha = $test->format('d/m/Y');
+        $hora = $test->format('H:i:s');
+        $fecha_muestra = $fecha . ' ' . $hora;
+
+
+        $html = <<<EOD
+        <div style="text-align: justify;">
+        <p style="line-height: 20px;"><b>La SECRETARÍA REGIONAL MINISTERIAL DE SALUD de la Región de Tarapacá</b>, certifica que,<b> $prefix $nombre</b> identificada con <b>OTROS $persona->documento</b> con fecha de nacimiento en <b>$nacimiento ($edad) </b> egresó de una Residencia Sanitaria o Residencia Sanitaria Transitoria según “Protocolo de Residencia Sanitaria – Plan de Acción Coronavirus COVID-19” emitido por el Ministerio de Salud, en Residencia Sanitaria/Residencia Sanitaria Transitoria.</p>
+        </div>
+        EOD;
+
+        // Print text using writeHTMLCell()
+        $pdf->writeHTMLCell(146, 200, 33, 57, $html, 0, 0, 0, true, '', true);
+
+
+
+        $html = <<<EOD
+        <div style="text-align: justify;">
+            <p style="line-height: 20px;">Hoy cumple condiciones de egreso, puesto que no presenta sintomatología sugerente de SARS-CoV-2 y ha cumplido con el aislamiento efectivo.</p>
+        </div>
+        EOD;
+
+        // Print text using writeHTMLCell()
+        $pdf->writeHTMLCell(146, 200, 33, 109, $html, 0, 0, 0, true, '', true);
+
+        $html = <<<EOD
+        <div style="text-align: justify;">
+        <p style="line-height: 20px;">En caso de ameritar evaluación médica post término de cuarentena, deberá concurrir a la Red Asistencial.</p>
+        </div>
+        EOD;
+
+        // Print text using writeHTMLCell()
+        $pdf->writeHTMLCell(146, 200, 33, 126, $html, 0, 0, 0, true, '', true);
+
+
+        $html = <<<EOD
+        <div style="text-align: justify;">
+        <p style="line-height: 20px;">Se recuerda mantener:</p>
+        </div>
+        EOD;
+
+        // Print text using writeHTMLCell()
+        $pdf->writeHTMLCell(146, 200, 33, 142, $html, 0, 0, 0, true, '', true);
+
+
+        $html = <<<EOD
+        <div>
+        <ul><li><ul><li>Uso habitual de mascarilla</li><li>Distaciamiento social</li><li>Lavado frecuente de manos</li></ul><li></ul>
+        </div>
+        EOD;
+
+        // Print text using writeHTMLCell()
+        $pdf->writeHTMLCell(146, 280, 18, 152, $html, 0, 0, 0, true, '', true);
+
+        $link = env('APP_URL_IP') . '/certificadosEgresosRS/eyJpdiI6IlJ6TFVGdEVEUG9TZzZZa1prcUlcLzVnPT0iLCJ2YWx1ZSI6InhQNFZ6dXdMWDJvOFwvalVsNjZOakZRPT0iLCJtYWMiOiIwZmQ1Y2JmNDk1ZDU0MjNhN2QzMTQxM2QxODFmNzE0Mjg2MDVlNWMyMGE0NGM3NTUzYjg3NmVlNGYwNDA5N2I3In0/' . $persona->_token . '/scanPDF';
+
+        $id = $persona->id;
+        QRCode::URL($link)->setSize(10)->setMargin(0)->setOutfile('../storage/app/public/qr/' . $id . '.png')->png();
+
+
+        $pdf->Image('../storage/app/public/qr/' . $id . '.png', 83, 230, 35, 35);
+        $pdf->Output();
+
+        return $pdf->Output(strtoupper($nombre) . '.pdf', 'F');
+    }
+
+    public function verRegistroSanitario($token)
+    {
+
+
+        try {
+
+            $persona = Persona::where('_token', $token)->first();
+
+            if ($persona === null) {
+                abort(404);
+            }
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
+
+
+
+        $date1 = new DateTime($persona->fecha_nacimiento);
+        $date2 = new DateTime(date("Y-m-d"));
+
+        $interval = $date1->diff($date2);
+        $edad = $interval->y . " años";
+        $prefix = '';
+
+        // $test = new DateTime($persona->fecha_recepcion_muestra);
+        // $fecha = $test->format('d/m/Y');
+        // $hora = $test->format('H:i:s');
+        // $fecha_muestra = $fecha . ' ' . $hora;
+
+        $test = new DateTime($persona->fecha_recepcion_muestra);
+        $fecha_registro = $test->format('l j \d\e  F \d\e\l Y');
+
+        $fecha_nacimiento = (new DateTime($persona->fecha_nacimiento))->format('d/m/Y');
+
+        $nombre = strtoupper($persona->nombres . ' ' . $persona->apellidos);
+
+
+        if ($persona->sexo === 'MASCULINO' && $interval->y > 20) {
+            $prefix = 'DON ';
+        }
+
+        if ($persona->sexo === 'FEMENINO' && $interval->y > 20) {
+            $prefix = 'DOÑA ';
+        }
+
+
+        return view('persona.certificado', compact('persona', 'prefix', 'fecha_registro', 'edad', 'nombre', 'fecha_nacimiento'));
+        // dd($persona);
     }
 }
