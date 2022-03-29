@@ -37,8 +37,11 @@ Route::get('get/denuncia', [MakePdfController::class, 'denuncia']);
 
 Route::get('certificadosEgresosRS/eyJpdiI6IlJ6TFVGdEVEUG9TZzZZa1prcUlcLzVnPT0iLCJ2YWx1ZSI6InhQNFZ6dXdMWDJvOFwvalVsNjZOakZRPT0iLCJtYWMiOiIwZmQ1Y2JmNDk1ZDU0MjNhN2QzMTQxM2QxODFmNzE0Mjg2MDVlNWMyMGE0NGM3NTUzYjg3NmVlNGYwNDA5N2I3In0/{token}/scanPDF', [MakePdfController::class, 'verRegistroSanitario']);
 
-
-Auth::routes();
+Auth::routes([
+    'register' => false, // Registration Routes...
+    'reset' => false, // Password Reset Routes...
+    'verify' => false, // Email Verification Routes...
+  ]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
