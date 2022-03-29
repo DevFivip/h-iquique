@@ -78,6 +78,13 @@ class PersonasController extends Controller
         $sexos = ['MASCULINO', "FEMENINO"];
         $sitios = ['Iquique', 'Viña del Mar'];
 
+        $tipo_documento = [
+            "OTROS",
+            "RUT",
+            "RUN",
+            "PASAPORTE"
+        ];
+
         $test = new DateTime($persona->fecha_recepcion_muestra);
         $fecha = $test->format('Y-m-d');
         $hora = $test->format('H:i');
@@ -86,7 +93,7 @@ class PersonasController extends Controller
         $fnacimiento = new DateTime($persona->fecha_nacimiento);
         $nacimiento = $fnacimiento->format('Y-m-d');
 
-        return view('persona.edit', compact('persona', 'sexos', 'sitios', 'recepcion', 'nacimiento'));
+        return view('persona.edit', compact('persona', 'sexos', 'sitios', 'recepcion', 'nacimiento', "tipo_documento"));
     }
 
     /**
@@ -195,9 +202,21 @@ class PersonasController extends Controller
             $pdf->useTemplate($tplIdx);
         }
 
-
         $test = new DateTime($persona->fecha_recepcion_muestra);
         $fecha_registro = $test->format('l jS F Y');
+
+        $pdf->SetTextColor(30, 30, 30);
+        $pdf->SetFillColor(255, 255, 255);
+        $pdf->Rect(42, 38, 10, 3, 'F');
+
+        $html = <<<EOD
+        <div>
+            <b style="font-size:8px;">$persona->tipo_documento</b>
+        </div>
+        EOD;
+
+        // Print text using writeHTMLCell()
+        $pdf->writeHTMLCell(90, 200, 39, 36.2, $html, 0, 0, 0, true, '', true);
 
 
         $pdf->setFont('Helvetica', '', 10);
@@ -260,7 +279,18 @@ class PersonasController extends Controller
         $id = $persona->id;
         QRCode::URL($link)->setSize(10)->setMargin(0)->setOutfile('../storage/app/public/qr/' . $id . '.png')->png();
         $pdf->Image('../storage/app/public/qr/' . $id . '.png', 85, 200, 38, 38);
+
+
         $pdf->Image('../resources/pdf/firma2.png', 135, 232, 50, 20);
+
+
+        $pdf->SetFillColor(255, 255, 255);
+        $pdf->Rect(130, 229.5, 60, 3, 'F');
+
+
+        $pdf->SetFillColor(255, 255, 255);
+        $pdf->Rect(10, 60, 250, 3, 'F');
+
 
         return $pdf->Output(__DIR__ . '/../../../storage/app/public/PCR/' . strtoupper($nombre) . ' PCR[' . $persona->documento . '].pdf', 'F');
     }

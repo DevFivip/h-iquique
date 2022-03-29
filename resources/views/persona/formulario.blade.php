@@ -13,6 +13,16 @@
                             <input type="hidden" name="status" value="0">
 
                             <div class="form-group">
+                                <label for="tipo_documento">Tipo Documento</label>
+                                <select name="tipo_documento" class="form-control">
+                                    <option value="OTROS">OTROS</option>
+                                    <option value="RUT">ROL UNICO TRIBUTARIO</option>
+                                    <option value="RUN">ROL UNICO NACIONAL</option>
+                                    <option value="PASAPORTE">PASAPORTE</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
                                 <label for="documento">Numero de Documento (Passaporte o RUT)</label>
                                 <input type="text" name="documento" class="form-control" id="documento">
                                 <a class="btn btn-primary my-2" onclick="buscar()">Buscar Cédula</a>
@@ -81,11 +91,12 @@
                                         "X-CSRF-Token": window.CSRF_TOKEN
                                     },
                                 })
+
                                 let cliente = await res.json();
 
                                 inputNombres.value = cliente.nombres
                                 inputApellidos.value = cliente.apellidos
-
+                                inputDocumento.value = 'CI' + valor
                             }
                         </script>
                     </div>

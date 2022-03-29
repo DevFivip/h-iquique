@@ -46,13 +46,14 @@
                     {{ $prefix }}
                     {{ $nombre }}</strong>
                 identificada con
-                <strong>OTROS</strong>
+                <strong>{{ $persona->tipo_documento }}</strong>
                 <strong>{{ $persona->documento }}</strong>
 
 
 
                 con fecha de nacimiento en <strong>{{ $fecha_nacimiento }}</strong>
-                <strong>({{$edad}})</strong> egresó de una Residencia Sanitaria o Residencia Sanitaria Transitoria
+                <strong>({{ $edad }})</strong> egresó de una Residencia Sanitaria o Residencia Sanitaria
+                Transitoria
 
                 según “Protocolo de Residencia Sanitaria – Plan de Acción Coronavirus COVID-19”
                 emitido por el Ministerio de Salud, en Residencia Sanitaria/Residencia Sanitaria Transitoria.

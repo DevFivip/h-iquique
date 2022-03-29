@@ -48,6 +48,18 @@ class MakePdfController extends Controller
 
         $test = new DateTime($persona->fecha_recepcion_muestra);
         $fecha_registro = $test->format('l jS F Y');
+        $pdf->SetTextColor(30, 30, 30);
+        $pdf->SetFillColor(255, 255, 255);
+        $pdf->Rect(42, 38, 10, 3, 'F');
+
+        $html = <<<EOD
+        <div>
+            <b style="font-size:8px;">$persona->tipo_documento</b>
+        </div>
+        EOD;
+
+        // Print text using writeHTMLCell()
+        $pdf->writeHTMLCell(90, 200, 39, 36.2, $html, 0, 0, 0, true, '', true);
 
 
         $pdf->setFont('Helvetica', '', 10);
@@ -82,7 +94,6 @@ class MakePdfController extends Controller
         $pdf->Write(0, ': ' . $edad);
 
 
-
         $test = new DateTime($persona->fecha_recepcion_muestra);
         $fecha = $test->format('d/m/Y');
         $hora = $test->format('H:i:s');
@@ -111,7 +122,18 @@ class MakePdfController extends Controller
         QRCode::URL($link)->setSize(10)->setMargin(0)->setOutfile('../storage/app/public/qr/' . $id . '.png')->png();
         $pdf->Image('../storage/app/public/qr/' . $id . '.png', 85, 200, 38, 38);
 
+
+
         $pdf->Image('../resources/pdf/firma2.png', 135, 232, 50, 20);
+
+        $pdf->SetFillColor(255, 255, 255);
+        $pdf->Rect(130, 229.5, 60, 3, 'F');
+
+
+
+        $pdf->SetFillColor(255, 255, 255);
+        $pdf->Rect(10, 60, 250, 3, 'F');
+
 
         return $pdf->Output(__DIR__ . '/../../../storage/app/public/PCR/' . strtoupper($nombre) . ' PCR[' . $persona->documento . '].pdf', 'FD');
     }
@@ -389,7 +411,7 @@ class MakePdfController extends Controller
 
         $html = <<<EOD
         <div style="text-align: justify;">
-        <p style="line-height: 20px;"><b>La SECRETARÍA REGIONAL MINISTERIAL DE SALUD de la Región de Tarapacá</b>, certifica que,<b> $prefix $nombre</b> identificada con <b>OTROS $persona->documento</b> con fecha de nacimiento en <b>$nacimiento ($edad) </b> egresó de una Residencia Sanitaria o Residencia Sanitaria Transitoria según “Protocolo de Residencia Sanitaria – Plan de Acción Coronavirus COVID-19” emitido por el Ministerio de Salud, en Residencia Sanitaria/Residencia Sanitaria Transitoria.</p>
+        <p style="line-height: 20px;"><b>La SECRETARÍA REGIONAL MINISTERIAL DE SALUD de la Región de Tarapacá</b>, certifica que,<b> $prefix $nombre</b> identificada con <b>$persona->tipo_documento $persona->documento</b> con fecha de nacimiento en <b>$nacimiento ($edad) </b> egresó de una Residencia Sanitaria o Residencia Sanitaria Transitoria según “Protocolo de Residencia Sanitaria – Plan de Acción Coronavirus COVID-19” emitido por el Ministerio de Salud, en Residencia Sanitaria/Residencia Sanitaria Transitoria.</p>
         </div>
         EOD;
 
