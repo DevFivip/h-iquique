@@ -24,7 +24,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/.env',function(){
-    return ('404');
+    return ('500');
 });
 Route::resource('persona', PersonasController::class)->middleware('auth');
 Route::post('persona/pagar/{id}', [PersonasController::class, 'pagar'])->middleware('auth');
